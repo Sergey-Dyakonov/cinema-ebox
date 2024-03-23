@@ -11,15 +11,26 @@ CREATE TABLE IF NOT EXISTS t_ticket (
     id          BIGSERIAL PRIMARY KEY   NOT NULL,
     session_id  BIGINT                  NOT NULL,
     place_id    BIGINT                  NOT NULL,
+    user_id     BIGINT                  NOT NULL,
+    price_id    BIGINT                  NOT NULL,
+    created_at  TIMESTAMP               NOT NULL,
 
-    created_at  TIMESTAMP               NOT NULL
+    CONSTRAINT fk_t_session_t_ticket FOREIGN KEY (session_id) REFERENCES t_session (id),
+    CONSTRAINT fk_t_place_t_ticket FOREIGN KEY (place_id) REFERENCES t_place (id),
+    CONSTRAINT fk_t_user_t_ticket FOREIGN KEY (user_id) REFERENCES t_user (id),
+    CONSTRAINT fk_t_price_t_ticket FOREIGN KEY (price_id) REFERENCES t_price (id)
 );
 
 CREATE TABLE IF NOT EXISTS t_session (
     id          BIGSERIAL PRIMARY KEY   NOT NULL,
     movie_id    BIGINT                  NOT NULL,
+    cinema_id   BIGINT                  NOT NULL,
+    hall_id     BIGINT                  NOT NULL,
     starts_at   TIMESTAMP               NOT NULL,
 
+    CONSTRAINT fk_t_movie_t_session FOREIGN KEY (movie_id) REFERENCES t_movie (id),
+    CONSTRAINT fk_t_cinema_t_session FOREIGN KEY (cinema_id) REFERENCES t_cinema (id),
+    CONSTRAINT fk_t_hall_t_session FOREIGN KEY (hall_id) REFERENCES t_hall (id)
 );
 
 CREATE TABLE IF NOT EXISTS t_movie (
@@ -27,7 +38,7 @@ CREATE TABLE IF NOT EXISTS t_movie (
     title           VARCHAR(512)            NOT NULL,
     description     VARCHAR(2048)           NOT NULL,
     poster_url      VARCHAR (512)           NOT NULL,
-    limitation_id   VARCHAR(128)            NOT NULL,
+    limitation_id   BIGINT                  NOT NULL,
     duration        INT                     NOT NULL,
     released_in     DATE                    NOT NULL,
     show_start_date DATE                    NOT NULL,
@@ -44,7 +55,7 @@ CREATE TABLE IF NOT EXISTS t_movie_genre (
     CONSTRAINT fk_t_movie_t_movie_genre FOREIGN KEY (movie_id) REFERENCES t_movie (id)
 );
 
-CREATE TABLE IF NOT EXISTS t_movie_contry (
+CREATE TABLE IF NOT EXISTS t_movie_country (
     id          BIGSERIAL PRIMARY KEY   NOT NULL,
     country_id  BIGINT                  NOT NULL,
     movie_id    BIGINT                  NOT NULL,
@@ -88,4 +99,55 @@ CREATE TABLE IF NOT EXISTS t_genre (
 CREATE TABLE IF NOT EXISTS t_limitation (
     id          BIGSERIAL PRIMARY KEY   NOT NULL,
     limitation  VARCHAR(16)             NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_cinema (
+    id      BIGSERIAL PRIMARY KEY   NOT NULL,
+    address VARCHAR(128)            NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_hall (
+    id          BIGSERIAL PRIMARY KEY   NOT NULL,
+    hall_name   VARCHAR(128)            NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_hall_cinema (
+    id          BIGSERIAL PRIMARY KEY   NOT NULL,
+    hall_id     BIGINT                  NOT NULL,
+    cinema_id   BIGINT                  NOT NULL,
+
+    CONSTRAINT fk_t_hall_t_hall_cinema FOREIGN KEY (hall_id) REFERENCES t_hall (id),
+    CONSTRAINT fk_t_cinema_t_hall_cinema FOREIGN KEY (cinema_id) REFERENCES t_cinema (id)
+);
+
+CREATE TABLE IF NOT EXISTS t_place (
+    id              BIGSERIAL PRIMARY KEY   NOT NULL,
+    row             INT                     NOT NULL,
+    seat            INT                     NOT NULL,
+    place_type_id   BIGINT                  NOT NULL,
+
+    CONSTRAINT fk_t_type_t_place FOREIGN KEY (place_type_id) REFERENCES t_place_type (id)
+);
+
+CREATE TABLE IF NOT EXISTS t_place_type (
+    id          BIGSERIAL PRIMARY KEY   NOT NULL,
+    place_type  VARCHAR(128)            NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_hall_place (
+    id          BIGSERIAL PRIMARY KEY   NOT NULL,
+    hall_id     BIGINT                  NOT NULL,
+    place_id    BIGINT                  NOT NULL,
+
+    CONSTRAINT fk_hall_t_hall_place FOREIGN KEY (hall_id) REFERENCES t_hall (id),
+    CONSTRAINT fk_place_t_hall_place FOREIGN KEY (place_id) REFERENCES t_place (id)
+);
+
+CREATE TABLE IF NOT EXISTS t_price (
+    id              BIGSERIAL PRIMARY KEY   NOT NULL,
+    session_id      BIGINT                  NOT NULL,
+    place_type_id   BIGINT                  NOT NULL,
+
+    CONSTRAINT fk_t_session_t_price FOREIGN KEY (session_id) REFERENCES t_session (id),
+    CONSTRAINT fk_t_place_type_t_price FOREIGN KEY (place_type_id) REFERENCES t_place_type (id)
 );
