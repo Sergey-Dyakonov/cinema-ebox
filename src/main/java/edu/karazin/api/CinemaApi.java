@@ -29,50 +29,50 @@ import java.util.List;
 @Validated
 public interface CinemaApi {
 
-    @Operation(summary = "Get all cinema shows from the cinema", description = "Get all cinema shows from the cinema", tags={ "cinema" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Get list of all cinema shows", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CinemaShow.class)))),
-        
-        @ApiResponse(responseCode = "404", description = "Cinema not found") })
+    @Operation(summary = "Get all cinema shows from the cinema", description = "Get all cinema shows from the cinema", tags = {"cinema"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get list of all cinema shows", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CinemaShow.class)))),
+
+            @ApiResponse(responseCode = "404", description = "Cinema not found")})
     @RequestMapping(value = "/cinema/{cinemaId}/cinemaShow",
-        produces = { "application/json", "application/xml" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<CinemaShow>> getCinemaShows(@Parameter(in = ParameterIn.PATH, description = "ID of cinema to return", required=true, schema=@Schema()) @PathVariable("cinemaId") Long cinemaId
-);
+            produces = {"application/json", "application/xml"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<CinemaShow>> getCinemaShows(@Parameter(in = ParameterIn.PATH, description = "ID of cinema to return", required = true, schema = @Schema()) @PathVariable("cinemaId") Long cinemaId
+    );
 
 
-    @Operation(summary = "Get list of all cinemas", description = "Get list of all cinemas", tags={ "cinema" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "List of all cinemas", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Cinema.class)))) })
+    @Operation(summary = "Get list of all cinemas", description = "Get list of all cinemas", tags = {"cinema"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of all cinemas", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Cinema.class))))})
     @RequestMapping(value = "/cinema",
-        produces = { "application/json", "application/xml" }, 
-        method = RequestMethod.GET)
+            produces = {"application/json", "application/xml"},
+            method = RequestMethod.GET)
     ResponseEntity<List<Cinema>> getCinemas();
 
 
-    @Operation(summary = "Get all movies from the cinema", description = "Get all movies from the cinema", tags={ "cinema" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Get list of all movies", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Movie.class)))),
-        
-        @ApiResponse(responseCode = "404", description = "Cinema not found") })
+    @Operation(summary = "Get all movies from the cinema", description = "Get all movies from the cinema", tags = {"cinema"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get list of all movies", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Movie.class)))),
+
+            @ApiResponse(responseCode = "404", description = "Cinema not found")})
     @RequestMapping(value = "/cinema/{cinemaId}/movies",
-        produces = { "application/json", "application/xml" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<Movie>> getMovies(@Parameter(in = ParameterIn.PATH, description = "ID of cinema to return", required=true, schema=@Schema()) @PathVariable("cinemaId") Long cinemaId
-);
+            produces = {"application/json", "application/xml"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Movie>> getMovies(@Parameter(in = ParameterIn.PATH, description = "ID of cinema to return", required = true, schema = @Schema()) @PathVariable("cinemaId") Long cinemaId
+    );
 
 
-    @Operation(summary = "Get session", description = "Get session", tags={ "cinema" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "A session", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullSession.class)))),
-        
-        @ApiResponse(responseCode = "404", description = "Cinema not found") })
+    @Operation(summary = "Get session", description = "Get session", tags = {"cinema"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "A session", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullSession.class)))),
+
+            @ApiResponse(responseCode = "404", description = "Cinema not found")})
     @RequestMapping(value = "/cinema/{cinemaId}/sessions/{sessionId}",
-        produces = { "application/json", "application/xml" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<FullSession>> getSession(@Parameter(in = ParameterIn.PATH, description = "ID of cinema", required=true, schema=@Schema()) @PathVariable("cinemaId") Long cinemaId
-, @Parameter(in = ParameterIn.PATH, description = "ID of session", required=true, schema=@Schema()) @PathVariable("sessionId") Long sessionId
-);
+            produces = {"application/json", "application/xml"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<FullSession>> getSession(@Parameter(in = ParameterIn.PATH, description = "ID of cinema", required = true, schema = @Schema()) @PathVariable("cinemaId") Long cinemaId
+            , @Parameter(in = ParameterIn.PATH, description = "ID of session", required = true, schema = @Schema()) @PathVariable("sessionId") Long sessionId
+    );
 
 }
 
